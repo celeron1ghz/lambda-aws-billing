@@ -76,6 +76,15 @@ const dimensions = [
         param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'awskms' }],
         description: billing =>
             kms.listAliases().promise().then(data => `(${data.Aliases.filter(v => !v.AliasName.match(/aws/)).length} keys)`),
+    },{
+        label: 'CodeBuild',
+        param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'CodeBuild' }],
+    },{
+        label: 'API Gateway',
+        param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonApiGateway' }],
+    },{
+        label: 'CloudFront',
+        param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonCloudFront' }],
     }
 ];
 
