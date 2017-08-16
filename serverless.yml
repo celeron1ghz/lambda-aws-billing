@@ -1,0 +1,35 @@
+service: aws-status-notifier
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  stage: dev
+  region: us-east-1
+  deploymentBucket: serverless-upload-us-east-1
+  versionFunctions: false
+
+  iamRoleStatements:
+    - Effect:   "Allow"
+      Action:
+        - "s3:ListAllMyBuckets"
+        - "kms:ListAliases"
+        - "ec2:DescribeInstances"
+        - "ec2:DescribeReservedInstances"
+        - "rds:DescribeDBInstances"
+        - "rds:DescribeReservedDBInstances"
+        - "route53:ListHostedZones"
+        - "cloudwatch:GetMetricStatistics"
+      Resource: "*"
+
+functions:
+  main:
+    handler: handler.aws_status_notifier
+    description: Post aws statuses to slack
+    timeout: 20
+    memorySize: 1024
+    events:
+      - schedule: cron(0 0 * * ? *)
+    environment:
+      GENERAL_SLACK_WEBHOOK_URL:          ${file(kms.js):kms.GENERAL_SLACK_WEBHOOK_URL}
+      AWS_STATUS_NOTIFIER_SLACK_CHANNEL:  ${file(kms.js):kms.AWS_STATUS_NOTIFIER_SLACK_CHANNEL}
+      AWS_STATUS_NOTIFIER_SSL_CHECK_URLS: ${file(kms.js):kms.AWS_STATUS_NOTIFIER_SSL_CHECK_URLS}

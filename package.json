@@ -1,0 +1,12 @@
+{
+  "name": "aws_status_notifier",
+  "version": "1.0.0",
+  "description": "post billing info to slack",
+  "devDependencies": {},
+  "dependencies": {
+    "co": "^4.6.0",
+    "moment-datetime": "0.0.2",
+    "slack-node": "^0.1.8",
+    "sprintf-js": "^1.0.3"
+  }
+}
