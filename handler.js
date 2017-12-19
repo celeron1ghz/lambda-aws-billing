@@ -29,7 +29,6 @@ module.exports.aws_status_notifier = function(event, context, callback) {
                 if (!param) continue;
 
                 console.log("slack param: ", JSON.stringify(params));
-                param.channel = process.env.AWS_STATUS_NOTIFIER_SLACK_CHANNEL;
                 param.mrkdwn  = true;
 
                 const result = yield post_to_slack(param);

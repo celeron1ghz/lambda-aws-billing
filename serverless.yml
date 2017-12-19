@@ -31,5 +31,4 @@ functions:
       - schedule: cron(0 0 * * ? *)
     environment:
       GENERAL_SLACK_WEBHOOK_URL:          ${file(kms.js):kms.GENERAL_SLACK_WEBHOOK_URL}
-      AWS_STATUS_NOTIFIER_SLACK_CHANNEL:  ${file(kms.js):kms.AWS_STATUS_NOTIFIER_SLACK_CHANNEL}
       AWS_STATUS_NOTIFIER_SSL_CHECK_URLS: ${file(kms.js):kms.AWS_STATUS_NOTIFIER_SSL_CHECK_URLS}
