@@ -5,7 +5,7 @@ const Slack   = require('slack-node');
 const slack   = new Slack();
 slack.setWebhook(process.env.GENERAL_SLACK_WEBHOOK_URL);
 
-const ssl  = require('./component/ssl.js');
+//const ssl  = require('./component/ssl.js');
 const ri   = require('./component/ri.js');
 const bill = require('./component/billing.js');
 
@@ -16,7 +16,7 @@ const post_to_slack = data => new Promise((resolve,reject) =>
 )
 
 module.exports.aws_status_notifier = function(event, context, callback) {
-    const targets = [ ssl, ri, bill ];
+    const targets = [ ri, bill ];
 
     co(function*(){
         for (const target of targets)   {
