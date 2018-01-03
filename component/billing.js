@@ -30,6 +30,18 @@ const dimensions = [
         description: billing =>
             ec2.describeInstances().promise().then(data => `(${data.Reservations.length} instances)`),
     },{
+        label: 'ECS',
+        icon:  'ecs',
+        param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonECS' }],
+    },{
+        label: 'Lambda',
+        icon:  'lambda',
+        param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AWSLambda' }],
+    },{
+        label: 'StepFunctions',
+        icon:  'stepfunctions',
+        param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonStates' }],
+    },{
         label: 'Route53',
         icon:  'route53',
         param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonRoute53' }],
@@ -41,6 +53,10 @@ const dimensions = [
         param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonRDS' }],
         description: billing =>
             rds.describeDBInstances().promise().then(data => `(${data.DBInstances.length} instances)`),
+    },{
+        label: 'DynamoDB',
+        icon:  'dynamodb',
+        param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonDynamoDB' }],
     },{
         label: 'S3',
         icon:  's3',
@@ -87,6 +103,10 @@ const dimensions = [
         param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'awskms' }],
         description: billing =>
             kms.listAliases().promise().then(data => `(${data.Aliases.filter(v => !v.AliasName.match(/aws/)).length} keys)`),
+    },{
+        label: 'GuardDuty',
+        icon:  'guardduty',
+        param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonGuardDuty' }],
     },{
         label: 'CodeBuild',
         icon:  'codebuild',
