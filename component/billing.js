@@ -24,17 +24,17 @@ const dimensions = [
             (resolve,reject) => resolve(`(${ (billing['Maximum'] * (100/108) / 0.1376469948).toFixed(2)}GB maybe)`)
         ),
     },{
-        label: 'Route53',
-        icon:  'route53',
-        param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonRoute53' }],
-        description: billing =>
-            r53.listHostedZones().promise().then(data => `(${data.HostedZones.length} hosted zone)`),
-    },{
         label: 'EC2',
         icon:  'ec2',
         param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonEC2' }],
         description: billing =>
             ec2.describeInstances().promise().then(data => `(${data.Reservations.length} instances)`),
+    },{
+        label: 'Route53',
+        icon:  'route53',
+        param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonRoute53' }],
+        description: billing =>
+            r53.listHostedZones().promise().then(data => `(${data.HostedZones.length} hosted zone)`),
     },{
         label: 'RDS',
         icon:  'rds',
@@ -78,6 +78,10 @@ const dimensions = [
                 });
         },
     },{
+        label: 'CloudFront',
+        icon:  'cloudfront',
+        param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonCloudFront' }],
+    },{
         label: 'KMS',
         icon:  'kms',
         param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'awskms' }],
@@ -91,10 +95,6 @@ const dimensions = [
         label: 'API Gateway',
         icon:  'apigateway',
         param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonApiGateway' }],
-    },{
-        label: 'CloudFront',
-        icon:  'cloudfront',
-        param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonCloudFront' }],
     }
 ];
 
