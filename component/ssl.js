@@ -9,7 +9,7 @@ let command = 'openssl s_client -connect %s:443 -servername %s < /dev/null 2> /d
     + 'perl -pe "chomp; s/^.*?=//"';
 
 module.exports = function(config) {
-    return process.env.AWS_STATUS_NOTIFIER_SSL_CHECK_URLS.split(',').map(url => {
+    return process.env.AWS_STATUS_NOTIFIER_SSL_CHECK_URLS.replace(/[\r\n]/g, '').split(',').map(url => {
         let cmd = sprintf(command, url, url);
 
         return new Promise((resolve,reject) => {
