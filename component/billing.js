@@ -1,17 +1,19 @@
 'use strict';
 
+const REGION = 'ap-northeast-1';
+
 const co      = require('co');
 const sprintf = require('sprintf-js').sprintf;
 
 const aws = require('aws-sdk');
 const cw  = new aws.CloudWatch({ region: 'us-east-1', endpoint: 'http://monitoring.us-east-1.amazonaws.com' });
 const r53 = new aws.Route53();
-const ec2 = new aws.EC2({ region: 'ap-northeast-1' });
-const rds = new aws.RDS({ region: 'ap-northeast-1' });
-const kms = new aws.KMS({ region: 'ap-northeast-1' });
+const ec2 = new aws.EC2({ region: REGION });
+const rds = new aws.RDS({ region: REGION });
+const kms = new aws.KMS({ region: REGION });
 const s3  = new aws.S3();
 
-const dimensions = [
+const parameters = [
     {
         label: 'Total',
         icon:  'yen',
@@ -118,46 +120,55 @@ const dimensions = [
     }
 ];
 
+// default value
+parameters.forEach(p => {
+    p.description = p.description || function(){ return Promise.resolve() };
+});
+
 module.exports = config => {
     const startDate = new Date();
     const endDate   = new Date();
     startDate.setDate(startDate.getDate() - 1); // get yesterday.
 
     return co(function*(){
-        const attachments = [];
+        const ret_billing =
+            yield Promise.all(
+                parameters.map(param =>
+                    cw.getMetricStatistics({
+                        MetricName: 'EstimatedCharges',
+                        Namespace: 'AWS/Billing',
+                        Period: 86400,
+                        StartTime: startDate,
+                        EndTime: endDate,
+                        Statistics: ['Maximum'],
+                        Dimensions: param.param,
+                    })
+                    .promise()
+                    .then(data => { param.billing = data; return param })
+                )
+            )
+            .then(data => data.filter(d => d.billing.Datapoints.length != 0 && d.billing.Datapoints[0].Maximum != 0) );
 
-        for (const dim of dimensions)   {
-            const cloudwatch_result = yield cw.getMetricStatistics({
-                MetricName: 'EstimatedCharges',
-                Namespace: 'AWS/Billing',
-                Period: 86400, /* 1 day */
-                StartTime: startDate,
-                EndTime: endDate,
-                Statistics: ['Maximum'],
-                Dimensions: dim.param,
-            }).promise()
+        const ret_description =
+            yield Promise.all(
+                ret_billing.map(b =>
+                    b.description(b.billing).then(data => {
+                        console.log(`${b.label}#description ==>`, data);
+                        b.description = data;
+                        return b;
+                    })
+                )
+            );
 
-            const datapoints = cloudwatch_result.Datapoints;
-
-            if (datapoints.length < 1) {
-                console.log(`No billing info for ${dim.label}`);
-                continue;
-            }
-
-            const billing = datapoints[datapoints.length - 1];
-            let opt_result = "";
-
-            if (dim.description != null)    {
-                opt_result = yield dim.description(billing);
-                console.log(`${dim.label}#description ==> `, opt_result);
-            }
-
-            attachments.push({
-                title: `:${dim.icon || 'thinking_face'}: ${dim.label}`,
-                value: "*$" + billing['Maximum'] + "* " + opt_result,
+        const attachments = ret_description.map(d => {
+            const data = d.billing.Datapoints;
+            const billing = data[data.length - 1];
+            return {
+                title: `:${d.icon || 'thinking_face'}: ${d.label}`,
+                value: "*$" + billing['Maximum'] + "* " + (d.description || ''),
                 short: true,
-            });
-        }
+            };
+        })
 
         const total = attachments.shift();
 

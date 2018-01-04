@@ -28,16 +28,16 @@ module.exports.aws_status_notifier = function(event, context, callback) {
             for (const param of params) {
                 if (!param) continue;
 
-                console.log("slack param: ", JSON.stringify(params));
-                param.mrkdwn  = true;
+                //console.log("slack param: ", JSON.stringify(params));
+                param.mrkdwn = true;
 
                 const result = yield post_to_slack(param);
-                console.log("slack response: ", result);
+                //console.log("slack response: ", result);
+                console.log("slack response: ", result.statusCode, result.status);
             }
         }
     })
     .then(data => {
-        console.log("function result ==> ", data);
         callback(null, data);
     })
     .catch(err => {
