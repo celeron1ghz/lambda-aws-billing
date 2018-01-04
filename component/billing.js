@@ -2,10 +2,9 @@
 
 const REGION = 'ap-northeast-1';
 
-const co      = require('co');
-const sprintf = require('sprintf-js').sprintf;
-
+const co  = require('co');
 const aws = require('aws-sdk');
+
 const cw  = new aws.CloudWatch({ region: 'us-east-1', endpoint: 'http://monitoring.us-east-1.amazonaws.com' });
 const r53 = new aws.Route53();
 const ec2 = new aws.EC2({ region: REGION });
