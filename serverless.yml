@@ -1,4 +1,4 @@
-service: aws-status-notifier
+service: aws-billing-notifier
 
 provider:
   name: aws
@@ -23,8 +23,8 @@ provider:
 
 functions:
   main:
-    handler: handler.aws_status_notifier
-    description: Post aws statuses to slack
+    handler: handler.aws_billing_notifier
+    description: Post aws billing info to slack
     timeout: 20
     memorySize: 1024
     events:

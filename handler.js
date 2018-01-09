@@ -15,7 +15,7 @@ const post_to_slack = data => new Promise((resolve,reject) =>
     })
 )
 
-module.exports.aws_status_notifier = function(event, context, callback) {
+module.exports.aws_billing_notifier = function(event, context, callback) {
     const targets = [ ri, bill ];
 
     co(function*(){
