@@ -174,7 +174,7 @@ module.exports = config => {
         return {
             username: "AWS Billing",
             icon_emoji: ':money_with_wings:',
-            text: 'Total price is ' + total.value,
+            text: 'Total price: ' + total.value,
             attachments: [{ mrkdwn_in: ['fields'], fields: attachments }]
         };
     });

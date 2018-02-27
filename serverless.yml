@@ -7,7 +7,6 @@ provider:
   region: us-east-1
   deploymentBucket: serverless-upload-us-east-1
   versionFunctions: false
-
   iamRoleStatements:
     - Effect:   "Allow"
       Action:
@@ -20,6 +19,11 @@ provider:
         - "route53:ListHostedZones"
         - "cloudwatch:GetMetricStatistics"
       Resource: "*"
+    - Effect: Allow
+      Action:
+        - ssm:GetParameter
+      Resource:
+        Fn::Join: [ ":", ["arn:aws:ssm:ap-northeast-1", { Ref: AWS::AccountId }, "parameter/slack/webhook/dev"]]
 
 functions:
   main:
@@ -29,6 +33,3 @@ functions:
     memorySize: 1024
     events:
       - schedule: cron(0 0 * * ? *)
-    environment:
-      GENERAL_SLACK_WEBHOOK_URL:          ${file(kms.js):kms.GENERAL_SLACK_WEBHOOK_URL}
-      AWS_STATUS_NOTIFIER_SSL_CHECK_URLS: ${file(kms.js):kms.AWS_STATUS_NOTIFIER_SSL_CHECK_URLS}
