@@ -18,6 +18,10 @@ module.exports = function(config) {
                     const remain = Math.round(diff / 86400000);
                     console.log("EC2", ec2.ReservedInstancesId, "==>", remain);
 
+                    if (remain < 0) {
+                        return;
+                    }
+
                     if (!(remain % 10 == 0 || remain <= 10) )   {
                         return;
                     }
@@ -68,6 +72,10 @@ module.exports = function(config) {
                     const diff  = endAt.getTime() - new Date().getTime();
                     const remain = Math.round(diff / 86400000);
                     console.log("RDS", db.ReservedDBInstancesOfferingId, "==>", remain);
+
+                    if (remain < 0) {
+                        return;
+                    }
 
                     if (!(remain % 10 == 0 || remain <= 10) )   {
                         return;

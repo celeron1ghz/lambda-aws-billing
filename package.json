@@ -4,6 +4,7 @@
   "description": "post billing info to slack",
   "devDependencies": {},
   "dependencies": {
+    "aws-sdk": "^2.203.0",
     "co": "^4.6.0",
     "moment-datetime": "0.0.2",
     "slack-node": "^0.1.8",
