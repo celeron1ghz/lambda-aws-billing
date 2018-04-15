@@ -2,9 +2,7 @@
 
 const REGION = 'ap-northeast-1';
 
-const co  = require('co');
 const aws = require('aws-sdk');
-
 const cw  = new aws.CloudWatch({ region: 'us-east-1', endpoint: 'http://monitoring.us-east-1.amazonaws.com' });
 const r53 = new aws.Route53();
 const ec2 = new aws.EC2({ region: REGION });
@@ -129,9 +127,9 @@ module.exports = config => {
   const endDate   = new Date();
   startDate.setDate(startDate.getDate() - 1); // get yesterday.
 
-  return co(function*(){
+  return (async () => {
     const ret_billing =
-      yield Promise.all(
+      await Promise.all(
         parameters.map(param =>
           cw.getMetricStatistics({
             MetricName: 'EstimatedCharges',
@@ -149,7 +147,7 @@ module.exports = config => {
       .then(data => data.filter(d => d.billing.Datapoints.length != 0 && d.billing.Datapoints[0].Maximum != 0) );
 
     const ret_description =
-      yield Promise.all(
+      await Promise.all(
         ret_billing.map(b =>
           b.description(b.billing).then(data => {
             console.log(`${b.label}#description ==>`, data);
@@ -171,11 +169,11 @@ module.exports = config => {
 
     const total = attachments.shift();
 
-    return {
+    return Promise.resolve({
       username: "AWS Billing",
       icon_emoji: ':money_with_wings:',
       text: 'Total price: ' + total.value,
       attachments: [{ mrkdwn_in: ['fields'], fields: attachments }]
-    };
-  });
+    });
+  })();
 };

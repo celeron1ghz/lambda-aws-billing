@@ -248,16 +248,6 @@ mime-types@^2.1.12, mime-types@~2.1.17:
   dependencies:
     mime-db "~1.33.0"
 
-moment-datetime@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/moment-datetime/-/moment-datetime-0.0.2.tgz#4ceac2941b2e9114e6bd2c592f61b930926fde71"
-  dependencies:
-    moment "1.7.2"
-
-moment@1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-1.7.2.tgz#e66be344be2e9ec1d12f1e16a8ca49bf63417f4f"
-
 oauth-sign@~0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"

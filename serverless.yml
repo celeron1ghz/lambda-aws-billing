@@ -2,7 +2,7 @@ service: aws-billing-notifier
 
 provider:
   name: aws
-  runtime: nodejs4.3
+  runtime: nodejs8.10
   stage: dev
   region: us-east-1
   deploymentBucket: serverless-upload-us-east-1
@@ -19,11 +19,6 @@ provider:
         - "route53:ListHostedZones"
         - "cloudwatch:GetMetricStatistics"
       Resource: "*"
-    - Effect: Allow
-      Action:
-        - ssm:GetParameter
-      Resource:
-        Fn::Join: [ ":", ["arn:aws:ssm:ap-northeast-1", { Ref: AWS::AccountId }, "parameter/slack/webhook/dev"]]
 
 functions:
   main:
@@ -31,5 +26,7 @@ functions:
     description: Post aws billing info to slack
     timeout: 20
     memorySize: 1024
+    environment:
+      SLACK_WEBHOOK_URL: "${ssm:/slack/webhook/dev~true}"
     events:
       - schedule: cron(0 0 * * ? *)
