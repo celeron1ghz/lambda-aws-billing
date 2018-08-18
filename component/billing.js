@@ -114,6 +114,18 @@ const parameters = [
     label: 'API Gateway',
     icon:  'apigateway',
     param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonApiGateway' }],
+  },{
+    label: 'VPC',
+    icon:  'vpc',
+    param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonVPC' }],
+  },{
+    label: 'Pinpoint',
+    icon:  'pinpoint',
+    param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonPinpoint' }],
+  },{
+    label: 'Step Functions',
+    icon:  'states',
+    param: [{ Name: 'Currency', Value: 'USD' }, { Name: 'ServiceName', Value: 'AmazonStates' }],
   }
 ];
 
