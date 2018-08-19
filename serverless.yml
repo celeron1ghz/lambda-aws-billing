@@ -30,3 +30,10 @@ functions:
       SLACK_WEBHOOK_URL: "${ssm:/slack/webhook/dev~true}"
     events:
       - schedule: cron(0 0 * * ? *)
+
+resources:
+  Description: Post aws billing info to slack
+  Resources:
+    IamRoleLambdaExecution:
+      Properties:
+        RoleName: "${self:service}"
